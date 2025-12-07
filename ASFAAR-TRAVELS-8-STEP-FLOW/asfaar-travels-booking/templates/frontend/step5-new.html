@@ -1,0 +1,94 @@
+    <!-- STEP 5: DETAILS -->
+    <div class="afsar-step" data-step="5">
+        <h2 class="afsar-step-title">Flight & Traveler Details</h2>
+        
+        <!-- Flight Booking Options -->
+        <div class="afsar-flight-choice-section">
+            <h3 class="afsar-section-title">✈️ Flight Arrangement</h3>
+            <p class="afsar-section-desc">Choose how you'd like to arrange your flights</p>
+            
+            <div class="afsar-flight-options">
+                <!-- Option 1: Book with us -->
+                <div class="afsar-flight-option-card" data-option="book-with-us">
+                    <div class="option-icon">🎫</div>
+                    <h4>Book Flight With Us</h4>
+                    <p>We'll arrange your flights for you</p>
+                    <button type="button" class="afsar-btn afsar-btn-option">Select This Option</button>
+                </div>
+                
+                <!-- Option 2: Fill own details -->
+                <div class="afsar-flight-option-card" data-option="fill-details">
+                    <div class="option-icon">✍️</div>
+                    <h4>I Have My Own Flight</h4>
+                    <p>Fill in your flight details below</p>
+                    <button type="button" class="afsar-btn afsar-btn-option">Select This Option</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Flight Details Form (Hidden by default, shows when "Fill details" selected) -->
+        <div class="afsar-flight-details-form" style="display: none;">
+            <hr class="afsar-divider">
+            <h3 class="afsar-section-title">✈️ Enter Your Flight Details</h3>
+            <p class="afsar-section-desc">Please provide your flight information</p>
+            
+            <div class="afsar-flight-forms">
+                <!-- Outbound Flight -->
+                <div class="afsar-flight-form-group">
+                    <h4>📤 Outbound Flight</h4>
+                    <div class="afsar-flight-fields">
+                        <div class="afsar-field">
+                            <label>Airline *</label>
+                            <input type="text" class="flight-detail-input" data-direction="outbound" data-field="airline" placeholder="e.g., PIA, Saudi Airlines" required>
+                        </div>
+                        <div class="afsar-field">
+                            <label>Date *</label>
+                            <input type="date" class="flight-detail-input" data-direction="outbound" data-field="date" required>
+                        </div>
+                        <div class="afsar-field">
+                            <label>Departure Time *</label>
+                            <input type="time" class="flight-detail-input" data-direction="outbound" data-field="time" required>
+                        </div>
+                        <div class="afsar-field">
+                            <label>Airport City *</label>
+                            <input type="text" class="flight-detail-input" data-direction="outbound" data-field="airport" placeholder="e.g., Islamabad, Jeddah" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Return Flight -->
+                <div class="afsar-flight-form-group">
+                    <h4>📥 Return Flight</h4>
+                    <div class="afsar-flight-fields">
+                        <div class="afsar-field">
+                            <label>Airline *</label>
+                            <input type="text" class="flight-detail-input" data-direction="return" data-field="airline" placeholder="e.g., PIA, Saudi Airlines" required>
+                        </div>
+                        <div class="afsar-field">
+                            <label>Date *</label>
+                            <input type="date" class="flight-detail-input" data-direction="return" data-field="date" required>
+                        </div>
+                        <div class="afsar-field">
+                            <label>Departure Time *</label>
+                            <input type="time" class="flight-detail-input" data-direction="return" data-field="time" required>
+                        </div>
+                        <div class="afsar-field">
+                            <label>Airport City *</label>
+                            <input type="text" class="flight-detail-input" data-direction="return" data-field="airport" placeholder="e.g., Jeddah, Islamabad" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <hr class="afsar-divider">
+        
+        <!-- Traveler Details Forms -->
+        <h3 class="afsar-section-title">👥 Traveler Information</h3>
+        <div id="afsar-traveler-forms"></div>
+        
+        <div class="afsar-step-nav">
+            <button type="button" class="afsar-btn afsar-btn-secondary afsar-btn-prev" data-prev="4">← Previous</button>
+            <button type="button" class="afsar-btn afsar-btn-primary afsar-btn-next" data-next="6">Next →</button>
+        </div>
+    </div>

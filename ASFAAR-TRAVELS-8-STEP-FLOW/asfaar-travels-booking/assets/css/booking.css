@@ -1,0 +1,1547 @@
+/* ============================================
+   AFSAR TRAVEL BOOKING - FRONTEND STYLES
+   Professional & Polished Design
+   ============================================ */
+
+/* === MAIN WRAPPER === */
+.afsar-booking-wrapper {
+    max-width: 1200px;
+    margin: 60px auto;
+    padding: 30px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+}
+
+/* === PROGRESS STEPS === */
+.afsar-progress {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 50px;
+    padding: 20px 0;
+    border-bottom: 3px solid #f0f0f0;
+}
+
+.afsar-progress-step {
+    flex: 1;
+    text-align: center;
+    position: relative;
+    font-size: 14px;
+    color: #999;
+    font-weight: 500;
+}
+
+.afsar-progress-step span {
+    display: block;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    margin: 0 auto 12px;
+    border-radius: 50%;
+    background: #f5f5f5;
+    color: #999;
+    font-weight: bold;
+    font-size: 18px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.afsar-progress-step.active {
+    color: #3055FF;
+}
+
+.afsar-progress-step.active span {
+    background: linear-gradient(135deg, #3055FF 0%, #4169FF 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(48, 85, 255, 0.3);
+    transform: scale(1.1);
+}
+
+.afsar-progress-step.completed span {
+    background: #28a745;
+    color: white;
+}
+
+/* === STEP CONTAINERS === */
+.afsar-step {
+    display: none;
+    background: white;
+    padding: 50px 40px;
+    border-radius: 16px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+    min-height: 500px;
+}
+
+.afsar-step.active {
+    display: block;
+    animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.afsar-step-title {
+    color: #1a1a1a;
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    line-height: 1.2;
+}
+
+.afsar-step-subtitle {
+    color: #666;
+    font-size: 16px;
+    margin-bottom: 40px;
+}
+
+/* === PACKAGE CARDS === */
+.afsar-packages-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.afsar-package-card {
+    border: 3px solid #e8e8e8;
+    padding: 30px;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    background: white;
+    overflow: hidden;
+}
+
+.afsar-package-card:hover {
+    border-color: #3055FF;
+    box-shadow: 0 8px 30px rgba(48, 85, 255, 0.15);
+    transform: translateY(-5px);
+}
+
+.afsar-package-card.selected {
+    border-color: #3055FF;
+    background: linear-gradient(135deg, #f0f4ff 0%, #ffffff 100%);
+    box-shadow: 0 8px 30px rgba(48, 85, 255, 0.2);
+}
+
+.afsar-package-card.selected::before {
+    content: '✓';
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    background: #3055FF;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.afsar-package-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.afsar-package-name {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 12px;
+}
+
+.afsar-package-category {
+    display: inline-block;
+    padding: 6px 18px;
+    background: linear-gradient(135deg, #FFB830 0%, #FFA500 100%);
+    color: white;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 15px;
+}
+
+.afsar-package-price {
+    font-size: 42px;
+    font-weight: 800;
+    color: #3055FF;
+    margin: 20px 0;
+    line-height: 1;
+}
+
+.afsar-package-price small {
+    font-size: 16px;
+    color: #666;
+    font-weight: 400;
+}
+
+.afsar-package-duration {
+    color: #666;
+    font-size: 15px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.afsar-package-duration::before {
+    content: '📅';
+    font-size: 18px;
+}
+
+.afsar-package-description {
+    color: #555;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-top: 15px;
+}
+
+/* === TRAVELERS SECTION === */
+.afsar-travelers-section {
+    max-width: 800px;
+    margin: 0 auto 40px;
+}
+
+.afsar-traveler-counter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 30px;
+    border: 3px solid #e8e8e8;
+    border-radius: 16px;
+    margin-bottom: 20px;
+    background: white;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.afsar-traveler-counter:hover {
+    border-color: #3055FF;
+    box-shadow: 0 6px 20px rgba(48, 85, 255, 0.15);
+    transform: translateY(-2px);
+}
+
+.afsar-traveler-info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex: 1;
+}
+
+.afsar-traveler-icon {
+    font-size: 48px;
+    line-height: 1;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f0f4ff 0%, #e8f0ff 100%);
+    border-radius: 12px;
+    padding: 8px;
+}
+
+.afsar-traveler-details {
+    flex: 1;
+}
+
+.afsar-traveler-label {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 4px;
+}
+
+.afsar-traveler-desc {
+    font-size: 14px;
+    color: #666;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.afsar-discount-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.afsar-free-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    background: linear-gradient(135deg, #FFB830 0%, #FFA500 100%);
+    color: white;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.afsar-counter-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.afsar-counter-btn {
+    width: 50px;
+    height: 50px;
+    border: 3px solid #3055FF;
+    background: white;
+    color: #3055FF;
+    border-radius: 12px;
+    font-size: 24px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(48, 85, 255, 0.15);
+}
+
+.afsar-counter-btn:hover {
+    background: linear-gradient(135deg, #3055FF 0%, #4169FF 100%);
+    color: white;
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(48, 85, 255, 0.3);
+}
+
+.afsar-counter-btn:active {
+    transform: scale(0.95);
+}
+
+.afsar-counter-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.afsar-counter-btn:disabled:hover {
+    background: white;
+    color: #3055FF;
+    box-shadow: 0 2px 8px rgba(48, 85, 255, 0.15);
+}
+
+.afsar-counter-controls input {
+    width: 80px;
+    text-align: center;
+    font-size: 28px;
+    font-weight: 700;
+    border: 3px solid #e8e8e8;
+    border-radius: 12px;
+    padding: 12px;
+    color: #3055FF;
+    background: #f9f9f9;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* === HOTELS SECTION === */
+.afsar-hotels-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.afsar-hotel-selection {
+    border: 2px solid #e8e8e8;
+    padding: 30px;
+    border-radius: 16px;
+    background: white;
+    transition: all 0.3s ease;
+}
+
+.afsar-hotel-selection:hover {
+    border-color: #3055FF;
+    box-shadow: 0 6px 20px rgba(48, 85, 255, 0.1);
+}
+
+.afsar-hotel-selection h3 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.afsar-hotel-selection h3::before {
+    content: '🏨';
+    font-size: 28px;
+}
+
+.afsar-hotel-select {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #e8e8e8;
+    border-radius: 10px;
+    font-size: 16px;
+    color: #1a1a1a;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.afsar-hotel-select:hover,
+.afsar-hotel-select:focus {
+    border-color: #3055FF;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(48, 85, 255, 0.1);
+}
+
+/* === TRANSPORT SECTION === */
+.afsar-transport-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.afsar-transport-card {
+    border: 3px solid #e8e8e8;
+    padding: 30px 25px;
+    text-align: center;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: white;
+    position: relative;
+}
+
+.afsar-transport-card:hover {
+    border-color: #3055FF;
+    box-shadow: 0 6px 20px rgba(48, 85, 255, 0.15);
+    transform: translateY(-5px);
+}
+
+.afsar-transport-card.selected {
+    border-color: #3055FF;
+    background: linear-gradient(135deg, #f0f4ff 0%, #ffffff 100%);
+    box-shadow: 0 8px 25px rgba(48, 85, 255, 0.2);
+}
+
+.afsar-transport-card.selected::before {
+    content: '✓';
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 35px;
+    height: 35px;
+    background: #3055FF;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.afsar-transport-icon {
+    font-size: 56px;
+    margin-bottom: 15px;
+}
+
+.afsar-transport-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 10px;
+}
+
+.afsar-transport-price {
+    font-size: 26px;
+    font-weight: 800;
+    color: #3055FF;
+    margin: 12px 0;
+}
+
+.afsar-transport-capacity {
+    font-size: 13px;
+    color: #666;
+}
+
+/* === DETAILS FORM === */
+.afsar-traveler-form {
+    border: 2px solid #e8e8e8;
+    padding: 30px;
+    border-radius: 16px;
+    margin-bottom: 25px;
+    background: white;
+}
+
+.afsar-form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.afsar-form-field label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #1a1a1a;
+    font-size: 15px;
+}
+
+.afsar-form-field input,
+.afsar-form-field select,
+.afsar-form-field textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e8e8e8;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+.afsar-form-field input:focus,
+.afsar-form-field select:focus,
+.afsar-form-field textarea:focus {
+    border-color: #3055FF;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(48, 85, 255, 0.1);
+}
+
+.afsar-form-field textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* === SUMMARY SECTION === */
+.afsar-summary-section {
+    background: #f9f9f9;
+    padding: 40px;
+    border-radius: 16px;
+}
+
+.afsar-summary-block {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    border: 1px solid #e8e8e8;
+}
+
+.afsar-summary-block h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.afsar-summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    font-size: 15px;
+}
+
+.afsar-summary-row:not(:last-child) {
+    border-bottom: 1px solid #f5f5f5;
+}
+
+.afsar-summary-label {
+    color: #666;
+}
+
+.afsar-summary-value {
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.afsar-summary-total {
+    background: linear-gradient(135deg, #3055FF 0%, #4169FF 100%);
+    color: white;
+    padding: 30px;
+    border-radius: 16px;
+    text-align: center;
+    margin-top: 30px;
+    box-shadow: 0 8px 25px rgba(48, 85, 255, 0.3);
+}
+
+.afsar-summary-total h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    opacity: 0.9;
+}
+
+.afsar-summary-total .price {
+    font-size: 48px;
+    font-weight: 800;
+    margin-top: 5px;
+}
+
+/* === SUCCESS PAGE === */
+.afsar-success-message {
+    text-align: center;
+    padding: 60px 40px;
+}
+
+.afsar-success-icon {
+    width: 120px;
+    height: 120px;
+    line-height: 120px;
+    margin: 0 auto 40px;
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+    border-radius: 50%;
+    font-size: 70px;
+    box-shadow: 0 10px 40px rgba(40, 167, 69, 0.3);
+    animation: successPop 0.6s ease;
+}
+
+@keyframes successPop {
+    0% { transform: scale(0); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.afsar-success-message h2 {
+    font-size: 36px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 15px;
+}
+
+.afsar-success-message p {
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.afsar-booking-info {
+    background: #f9f9f9;
+    padding: 30px;
+    border-radius: 16px;
+    margin: 40px auto;
+    max-width: 600px;
+    text-align: left;
+    border: 2px solid #e8e8e8;
+}
+
+.afsar-booking-info h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 20px;
+}
+
+.afsar-booking-ref {
+    font-size: 32px;
+    font-weight: 800;
+    color: #3055FF;
+    margin: 20px 0;
+    letter-spacing: 2px;
+}
+
+/* === BUTTONS === */
+.afsar-btn {
+    padding: 16px 40px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.afsar-btn-primary {
+    background: linear-gradient(135deg, #3055FF 0%, #4169FF 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(48, 85, 255, 0.3);
+}
+
+.afsar-btn-primary:hover {
+    background: linear-gradient(135deg, #2444DD 0%, #3055FF 100%);
+    box-shadow: 0 6px 20px rgba(48, 85, 255, 0.4);
+    transform: translateY(-2px);
+}
+
+.afsar-btn-secondary {
+    background: #e8e8e8;
+    color: #666;
+}
+
+.afsar-btn-secondary:hover {
+    background: #d0d0d0;
+}
+
+.afsar-btn:disabled {
+    background: #e8e8e8;
+    color: #999;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.afsar-btn-success {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+    font-size: 18px;
+    padding: 18px 50px;
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+}
+
+.afsar-btn-success:hover {
+    background: linear-gradient(135deg, #20c997 0%, #28a745 100%);
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+    transform: translateY(-2px);
+}
+
+/* === SKIP BUTTON === */
+.afsar-btn-skip {
+    padding: 16px 35px;
+    border: 2px solid #FFB830;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: white;
+    color: #FFB830;
+    box-shadow: 0 2px 10px rgba(255, 184, 48, 0.2);
+}
+
+.afsar-btn-skip:hover {
+    background: linear-gradient(135deg, #FFB830 0%, #FFA500 100%);
+    color: white;
+    border-color: #FFB830;
+    box-shadow: 0 4px 15px rgba(255, 184, 48, 0.4);
+    transform: translateY(-2px);
+}
+
+.afsar-btn-skip:active {
+    transform: translateY(0);
+}
+
+.afsar-btn-skip::before {
+    content: '⏭️';
+    font-size: 18px;
+}
+    background: linear-gradient(135deg, #20c997 0%, #28a745 100%);
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+    transform: translateY(-2px);
+}
+
+/* === NAVIGATION === */
+
+/* === PRICE DISPLAY === */
+.afsar-price-breakdown {
+    background: white;
+    border: 2px solid #e8e8e8;
+    border-radius: 12px;
+    padding: 25px;
+    margin: 30px 0;
+}
+
+.afsar-price-breakdown h4 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: #1a1a1a;
+}
+
+.afsar-price-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #f5f5f5;
+}
+
+.afsar-price-row:last-child {
+    border-bottom: none;
+    font-weight: 700;
+    font-size: 18px;
+    color: #3055FF;
+    padding-top: 20px;
+    margin-top: 10px;
+    border-top: 2px solid #3055FF;
+}
+
+/* === RESPONSIVE DESIGN === */
+@media (max-width: 768px) {
+    .afsar-booking-wrapper {
+        padding: 20px 15px;
+        margin: 30px auto;
+    }
+    
+    .afsar-progress {
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+    
+    .afsar-progress-step {
+        flex: 1 1 calc(50% - 10px);
+        min-width: 120px;
+    }
+    
+    .afsar-progress-step span {
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        font-size: 16px;
+    }
+    
+    .afsar-step {
+        padding: 30px 20px;
+    }
+    
+    .afsar-step-title {
+        font-size: 28px;
+    }
+    
+    .afsar-packages-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .afsar-hotels-section {
+        grid-template-columns: 1fr;
+    }
+    
+    .afsar-transport-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 15px;
+    }
+    
+    .afsar-form-row {
+        grid-template-columns: 1fr;
+    }
+    
+
+/* === LOADING STATE === */
+.afsar-loading {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.afsar-loading::after {
+    content: '';
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #3055FF;
+    border-radius: 50%;
+    display: inline-block;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* === ERROR MESSAGES === */
+.afsar-error {
+    background: #fff3f3;
+    border: 2px solid #ff4444;
+    color: #cc0000;
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.afsar-success-msg {
+    background: #f0fff4;
+    border: 2px solid #28a745;
+    color: #1e7e34;
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+/* === DATE VALIDATION === */
+.afsar-dob-error {
+    color: #ff4444;
+    font-size: 12px;
+    margin-top: 4px;
+    display: block;
+    font-weight: 600;
+}
+
+.afsar-dob-input.error {
+    border-color: #ff4444 !important;
+    background-color: #fff5f5 !important;
+}
+
+.afsar-dob-input.valid {
+    border-color: #28a745 !important;
+    background-color: #f0fff4 !important;
+}
+
+.afsar-form-field small {
+    color: #666;
+    font-size: 12px;
+    display: block;
+    margin-top: 4px;
+    font-weight: 400;
+}
+
+/* === PERFECT BUTTON LAYOUT === */
+
+.afsar-btn-prev {
+    justify-self: start !important;
+    grid-column: 1 !important;
+}
+
+.afsar-btn-skip {
+    justify-self: center !important;
+    grid-column: 2 !important;
+    background: linear-gradient(135deg, #FFB830 0%, #FFA500 100%) !important;
+    color: white !important;
+}
+
+.afsar-btn-skip:hover {
+    background: linear-gradient(135deg, #FFA500 0%, #FF8C00 100%) !important;
+}
+
+.afsar-btn-next {
+    justify-self: end !important;
+    grid-column: 3 !important;
+}
+
+
+/* ============================================ */
+/* BUTTON NAVIGATION LAYOUT - FLEXBOX */
+/* ============================================ */
+
+.afsar-step-nav {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin-top: 50px;
+    padding-top: 30px;
+    border-top: 2px solid #f0f0f0;
+    gap: 20px;
+}
+
+/* Previous Button - LEFT */
+.afsar-btn-prev {
+    flex: 0 0 auto;
+    margin: 0 !important;
+}
+
+/* Skip Button - CENTER */
+.afsar-btn-skip {
+    flex: 0 0 auto;
+    margin: 0 !important;
+    padding: 16px 35px;
+    border: 2px solid #FFB830;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: linear-gradient(135deg, #FFB830 0%, #FFA500 100%) !important;
+    color: white !important;
+    box-shadow: 0 2px 10px rgba(255, 184, 48, 0.3);
+}
+
+.afsar-btn-skip:hover {
+    background: linear-gradient(135deg, #FFA500 0%, #FF8C00 100%) !important;
+    box-shadow: 0 4px 15px rgba(255, 184, 48, 0.5);
+    transform: translateY(-2px);
+}
+
+.afsar-btn-skip:active {
+    transform: translateY(0);
+}
+
+.afsar-btn-skip::before {
+    content: '⏭️';
+    font-size: 18px;
+}
+
+/* Next Button - RIGHT */
+.afsar-btn-next {
+    flex: 0 0 auto;
+    margin: 0 !important;
+}
+
+/* Mobile Responsive - Stack Vertically */
+@media (max-width: 768px) {
+    .afsar-step-nav {
+        flex-direction: column !important;
+        gap: 15px;
+    }
+    
+    .afsar-btn-prev,
+    .afsar-btn-skip,
+    .afsar-btn-next {
+        width: 100%;
+        margin: 0 !important;
+    }
+}
+
+/* Tablet Responsive */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .afsar-step-nav {
+        gap: 15px;
+    }
+    
+    .afsar-btn-prev,
+    .afsar-btn-skip,
+    .afsar-btn-next {
+        padding: 14px 25px;
+        font-size: 15px;
+    }
+}
+
+/* ============================================ */
+/* VISA CALCULATOR STYLES */
+/* ============================================ */
+
+.afsar-visa-section {
+    margin-top: 30px;
+    padding: 25px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+    border: 2px solid #e8ecf1;
+    border-radius: 12px;
+}
+
+.afsar-visa-breakdown {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    border-left: 4px solid #3055FF;
+}
+
+.afsar-visa-breakdown h4 {
+    color: #1a1a1a;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.visa-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.visa-item:last-of-type {
+    border-bottom: none;
+}
+
+.visa-item span {
+    color: #666;
+    font-size: 14px;
+}
+
+.visa-item strong {
+    color: #1a1a1a;
+    font-size: 16px;
+}
+
+.visa-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin-top: 10px;
+    background: linear-gradient(135deg, #3055FF 0%, #2040cc 100%);
+    border-radius: 8px;
+    color: white;
+}
+
+.visa-total .amount {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+/* ============================================ */
+/* CURRENCY CONVERTER STYLES */
+/* ============================================ */
+
+.currency-display {
+    background: linear-gradient(135deg, #FFB830 0%, #FFA500 100%);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    color: white;
+}
+
+.sar-amount {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.pkr-amount {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    opacity: 0.95;
+}
+
+.exchange-rate {
+    font-size: 13px;
+    opacity: 0.85;
+    font-style: italic;
+}
+
+/* ============================================ */
+/* FLIGHT DETAILS STYLES */
+/* ============================================ */
+
+.afsar-flight-section {
+    margin: 30px 0;
+    padding: 25px;
+    background: #f8f9fa;
+    border: 2px dashed #d1d8e0;
+    border-radius: 12px;
+}
+
+.afsar-section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.afsar-section-desc {
+    color: #666;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.afsar-flight-groups {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+}
+
+.afsar-flight-group h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #3055FF;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e8ecf1;
+}
+
+.afsar-flight-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.flight-input {
+    padding: 12px 15px;
+    border: 2px solid #e8ecf1;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.flight-input:focus {
+    outline: none;
+    border-color: #3055FF;
+    box-shadow: 0 0 0 3px rgba(48, 85, 255, 0.1);
+}
+
+.flight-input::placeholder {
+    color: #999;
+}
+
+.afsar-divider {
+    border: none;
+    border-top: 2px solid #e8ecf1;
+    margin: 30px 0;
+}
+
+/* Flight Info Display in Summary */
+.flight-info {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 10px 0;
+}
+
+.flight-info p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.flight-info strong {
+    color: #3055FF;
+}
+
+/* ============================================ */
+/* RESPONSIVE - MOBILE */
+/* ============================================ */
+
+@media (max-width: 768px) {
+    .afsar-flight-groups {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .afsar-visa-breakdown {
+        padding: 15px;
+    }
+    
+    .visa-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    
+    .currency-display {
+        padding: 15px;
+    }
+    
+    .sar-amount {
+        font-size: 24px;
+    }
+    
+    .pkr-amount {
+        font-size: 18px;
+    }
+}
+
+/* ============================================ */
+/* FLIGHT CHOICE & DETAILS (NEW) */
+/* ============================================ */
+
+.afsar-flight-choice-section {
+    margin: 30px 0;
+}
+
+.afsar-flight-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+    margin-top: 20px;
+}
+
+.afsar-flight-option-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border: 3px solid #e8ecf1;
+    border-radius: 15px;
+    padding: 30px 25px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.afsar-flight-option-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(48, 85, 255, 0.15);
+    border-color: #3055FF;
+}
+
+.afsar-flight-option-card.selected {
+    border-color: #3055FF;
+    border-width: 4px;
+    background: linear-gradient(135deg, #f0f4ff 0%, #ffffff 100%);
+    box-shadow: 0 8px 25px rgba(48, 85, 255, 0.2);
+}
+
+.afsar-flight-option-card.selected::before {
+    content: '✓';
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 35px;
+    height: 35px;
+    background: linear-gradient(135deg, #3055FF 0%, #2040cc 100%);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.afsar-flight-option-card .option-icon {
+    font-size: 60px;
+    margin-bottom: 15px;
+}
+
+.afsar-flight-option-card h4 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 15px 0 10px;
+}
+
+.afsar-flight-option-card p {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.afsar-btn-option {
+    background: linear-gradient(135deg, #3055FF 0%, #2040cc 100%);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.afsar-btn-option:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(48, 85, 255, 0.4);
+}
+
+.afsar-flight-option-card.selected .afsar-btn-option {
+    background: linear-gradient(135deg, #FFB830 0%, #FFA500 100%);
+}
+
+/* Flight Details Form */
+.afsar-flight-details-form {
+    margin-top: 30px;
+    padding: 25px;
+    background: #f8f9fa;
+    border: 2px solid #e8ecf1;
+    border-radius: 12px;
+}
+
+.afsar-flight-forms {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.afsar-flight-form-group {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid #e8ecf1;
+}
+
+.afsar-flight-form-group h4 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #3055FF;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.afsar-flight-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.afsar-field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.afsar-field label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.flight-detail-input {
+    padding: 12px 15px;
+    border: 2px solid #e8ecf1;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.flight-detail-input:focus {
+    outline: none;
+    border-color: #3055FF;
+    box-shadow: 0 0 0 3px rgba(48, 85, 255, 0.1);
+}
+
+.flight-detail-input::placeholder {
+    color: #999;
+}
+
+/* Flight Booking Choice in Summary */
+.flight-booking-choice {
+    background: linear-gradient(135deg, #f0f4ff 0%, #ffffff 100%);
+    padding: 20px;
+    border-radius: 10px;
+    border-left: 4px solid #3055FF;
+}
+
+.flight-booking-choice p {
+    margin: 5px 0;
+}
+
+/* ============================================ */
+/* RESPONSIVE - FLIGHT CHOICE */
+/* ============================================ */
+
+@media (max-width: 768px) {
+    .afsar-flight-options {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .afsar-flight-forms {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .afsar-flight-option-card {
+        padding: 25px 20px;
+    }
+    
+    .afsar-flight-option-card .option-icon {
+        font-size: 50px;
+    }
+}
+
+/* ============================================ */
+/* FLIGHT DETAILS SECTION (SIMPLE) */
+/* ============================================ */
+
+.afsar-flight-details-section {
+    margin: 30px 0;
+}
+
+.afsar-flight-forms {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.afsar-flight-form-group {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    border: 2px solid #e8ecf1;
+    transition: all 0.3s ease;
+}
+
+.afsar-flight-form-group:hover {
+    border-color: #3055FF;
+    box-shadow: 0 4px 15px rgba(48, 85, 255, 0.1);
+}
+
+.afsar-flight-form-group h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #3055FF;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.afsar-flight-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.afsar-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.afsar-field label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.flight-detail-input {
+    padding: 12px 15px;
+    border: 2px solid #e8ecf1;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.flight-detail-input:focus {
+    outline: none;
+    border-color: #3055FF;
+    box-shadow: 0 0 0 3px rgba(48, 85, 255, 0.1);
+}
+
+.flight-detail-input::placeholder {
+    color: #999;
+}
+
+/* Flight Info Display in Summary */
+.flight-info {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 10px 0;
+}
+
+.flight-info p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.flight-info strong {
+    color: #3055FF;
+}
+
+/* ============================================ */
+/* RESPONSIVE - FLIGHT DETAILS */
+/* ============================================ */
+
+@media (max-width: 768px) {
+    .afsar-flight-forms {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .afsar-flight-form-group {
+        padding: 20px;
+    }
+}

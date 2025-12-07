@@ -1,0 +1,706 @@
+jQuery(document).ready(function($) {
+    console.log('AFSAR Booking System Loaded');
+    
+    const booking = {
+        package: null,
+        persons: { adults: 2, children: 0, infants: 0 },
+        hotels: { makkah: null, madinah: null },
+        transport: null,
+        travelers: [],
+        currentStep: 1
+    };
+    
+    // Initialize
+    init();
+    
+    function init() {
+        setupPackageSelection();
+        setupTravelerCounters();
+        setupHotelSelection();
+        setupTransportSelection();
+        setupSkipButtons();
+        setupNavigation();
+        setupCompletion();
+        setupDateValidation();
+    }
+    
+    // STEP 1: Package Selection
+    function setupPackageSelection() {
+        $('.afsar-package-card').on('click', function() {
+            $('.afsar-package-card').removeClass('selected');
+            $(this).addClass('selected');
+            
+            booking.package = JSON.parse($(this).attr('data-package'));
+            $('[data-step="1"] .afsar-btn-next').prop('disabled', false);
+            
+            console.log('Package selected:', booking.package);
+        });
+        
+        $('.afsar-btn-select-package').on('click', function(e) {
+            e.stopPropagation();
+            $(this).closest('.afsar-package-card').click();
+            goToStep(2);
+        });
+    }
+    
+    // STEP 2: Traveler Counters
+    function setupTravelerCounters() {
+        $('.afsar-counter-btn').on('click', function() {
+            const action = $(this).data('action');
+            const target = $(this).data('target');
+            
+            if (action === 'plus') {
+                booking.persons[target]++;
+            } else if (action === 'minus') {
+                const min = target === 'adults' ? 1 : 0;
+                if (booking.persons[target] > min) {
+                    booking.persons[target]--;
+                }
+            }
+            
+            $('#' + target + 'Count').val(booking.persons[target]);
+            console.log('Travelers:', booking.persons);
+        });
+    }
+    
+    // STEP 3: Hotel Selection (Optional)
+    function setupHotelSelection() {
+        $('.afsar-hotel-select').on('change', function() {
+            const city = $(this).data('city');
+            const selectedOption = $(this).find('option:selected');
+            
+            if (selectedOption.val()) {
+                booking.hotels[city] = JSON.parse(selectedOption.attr('data-hotel'));
+            } else {
+                booking.hotels[city] = null;
+            }
+            
+            // Hotels are optional - enable next button always
+            // User can proceed even without selecting hotels
+            $('[data-step="3"] .afsar-btn-next').prop('disabled', false);
+            
+            console.log('Hotels:', booking.hotels);
+        });
+        
+        // Enable next button by default since hotels are optional
+        $('[data-step="3"] .afsar-btn-next').prop('disabled', false);
+    }
+    
+    // STEP 4: Transport Selection (Optional)
+    function setupTransportSelection() {
+        $('.afsar-transport-card').on('click', function() {
+            $('.afsar-transport-card').removeClass('selected');
+            $(this).addClass('selected');
+            
+            booking.transport = JSON.parse($(this).attr('data-transport'));
+            $('[data-step="4"] .afsar-btn-next').prop('disabled', false);
+            
+            console.log('Transport selected:', booking.transport);
+        });
+        
+        // Enable next button by default since transport is optional
+        $('[data-step="4"] .afsar-btn-next').prop('disabled', false);
+    }
+    
+    // Handle Skip Buttons
+    function setupSkipButtons() {
+        // Use event delegation to ensure buttons work
+        $(document).on('click', '.afsar-btn-skip', function() {
+            const skipStep = $(this).data('skip');
+            const nextStep = $(this).data('next');
+            
+            console.log('Skip button clicked! Step:', skipStep, 'Next:', nextStep);
+            
+            // Clear selections for skipped step
+            if (skipStep === 3) {
+                booking.hotels = { makkah: null, madinah: null };
+                console.log('Hotels skipped - set to null');
+            } else if (skipStep === 4) {
+                booking.transport = null;
+                console.log('Transport skipped - set to null');
+            }
+            
+            // Go to next step
+            console.log('Moving to step:', nextStep);
+            goToStep(nextStep);
+        });
+        
+        console.log('Skip buttons setup complete');
+    }
+    
+    // Navigation
+    function setupNavigation() {
+        $('.afsar-btn-next').on('click', function() {
+            const nextStep = $(this).data('next');
+            
+            if (nextStep === 5) {
+                generateTravelerForms();
+            } else if (nextStep === 6) {
+                if (validateTravelerForms()) {
+                    collectTravelerData();
+                    generateSummary();
+                } else {
+                    alert('Please fill all traveler details');
+                    return;
+                }
+            }
+            
+            goToStep(nextStep);
+        });
+        
+        $('.afsar-btn-prev').on('click', function() {
+            const prevStep = $(this).data('prev');
+            goToStep(prevStep);
+        });
+    }
+    
+    function goToStep(step) {
+        $('.afsar-step').removeClass('active');
+        $('[data-step="' + step + '"]').addClass('active');
+        
+        $('.afsar-progress-step').removeClass('active');
+        $('.afsar-progress-step[data-step="' + step + '"]').addClass('active');
+        
+        // Mark completed steps
+        $('.afsar-progress-step').each(function() {
+            if ($(this).data('step') < step) {
+                $(this).addClass('completed');
+            } else {
+                $(this).removeClass('completed');
+            }
+        });
+        
+        booking.currentStep = step;
+        
+        // Scroll to top
+        $('html, body').animate({
+            scrollTop: $('.afsar-booking-wrapper').offset().top - 50
+        }, 300);
+    }
+    
+    // STEP 5: Generate Traveler Forms
+    function generateTravelerForms() {
+        const totalTravelers = booking.persons.adults + booking.persons.children + booking.persons.infants;
+        let formsHTML = '';
+        
+        let counter = 0;
+        
+        // Adults (12+ years)
+        for (let i = 0; i < booking.persons.adults; i++) {
+            counter++;
+            formsHTML += generateTravelerForm(counter, 'Adult ' + (i + 1), 'adult');
+        }
+        
+        // Children (2-11 years)
+        for (let i = 0; i < booking.persons.children; i++) {
+            counter++;
+            formsHTML += generateTravelerForm(counter, 'Child ' + (i + 1), 'child');
+        }
+        
+        // Infants (0-2 years)
+        for (let i = 0; i < booking.persons.infants; i++) {
+            counter++;
+            formsHTML += generateTravelerForm(counter, 'Infant ' + (i + 1), 'infant');
+        }
+        
+        $('#afsar-traveler-forms').html(formsHTML);
+    }
+    
+    function generateTravelerForm(index, label, type) {
+        // Calculate date restrictions based on traveler type
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Reset time to start of day
+        
+        let maxDate, minDate, ageLabel, ageHelp;
+        
+        if (type === 'adult') {
+            // Adults must be 12+ years old
+            // max = 12 years ago (can't be younger than 12)
+            // min = 100 years ago (reasonable maximum age)
+            maxDate = new Date(today);
+            maxDate.setFullYear(maxDate.getFullYear() - 12);
+            minDate = new Date(today);
+            minDate.setFullYear(minDate.getFullYear() - 100);
+            ageLabel = 'Must be 12 years or older';
+            ageHelp = '(12+ years)';
+        } else if (type === 'child') {
+            // Children must be 2-11 years old  
+            // max = 2 years ago + 1 day (youngest they can be)
+            // min = 11 years and 364 days ago (oldest they can be)
+            maxDate = new Date(today);
+            maxDate.setFullYear(maxDate.getFullYear() - 2);
+            maxDate.setDate(maxDate.getDate() + 1); // Add 1 day to allow exactly 2 years
+            minDate = new Date(today);
+            minDate.setFullYear(minDate.getFullYear() - 12);
+            minDate.setDate(minDate.getDate() + 1); // Add 1 day to not overlap with adults
+            ageLabel = 'Must be between 2 and 11 years old';
+            ageHelp = '(2-11 years)';
+        } else if (type === 'infant') {
+            // Infants must be 0-2 years old
+            // max = today (can be born today)
+            // min = 2 years ago (oldest they can be)
+            maxDate = new Date(today);
+            minDate = new Date(today);
+            minDate.setFullYear(minDate.getFullYear() - 2);
+            ageLabel = 'Must be 2 years or younger';
+            ageHelp = '(0-2 years)';
+        }
+        
+        // Format dates for HTML date input (YYYY-MM-DD)
+        const formatDate = (date) => {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        };
+        
+        const maxDateStr = formatDate(maxDate);
+        const minDateStr = formatDate(minDate);
+        
+        return `
+            <div class="afsar-traveler-form" data-traveler="${index}" data-type="${type}">
+                <h3>${label}</h3>
+                <div class="afsar-form-row">
+                    <div class="afsar-form-field">
+                        <label>Full Name *</label>
+                        <input type="text" name="name_${index}" required>
+                    </div>
+                    <div class="afsar-form-field">
+                        <label>Email ${index === 1 ? '*' : ''}</label>
+                        <input type="email" name="email_${index}" ${index === 1 ? 'required' : ''}>
+                    </div>
+                </div>
+                <div class="afsar-form-row">
+                    <div class="afsar-form-field">
+                        <label>Phone ${index === 1 ? '*' : ''}</label>
+                        <input type="tel" name="phone_${index}" ${index === 1 ? 'required' : ''}>
+                    </div>
+                    <div class="afsar-form-field">
+                        <label>Passport Number</label>
+                        <input type="text" name="passport_${index}">
+                    </div>
+                </div>
+                <div class="afsar-form-row">
+                    <div class="afsar-form-field">
+                        <label>Date of Birth ${ageHelp} *</label>
+                        <input type="date" 
+                               name="dob_${index}" 
+                               class="afsar-dob-input"
+                               min="${minDateStr}" 
+                               max="${maxDateStr}" 
+                               data-type="${type}"
+                               data-age-label="${ageLabel}"
+                               data-min-date="${minDateStr}"
+                               data-max-date="${maxDateStr}"
+                               onchange="validateDateOnChange(this)"
+                               oninput="validateDateOnChange(this)"
+                               required
+                               title="${ageLabel}">
+                        <small style="color: #666; font-size: 12px; display: block; margin-top: 4px;"><strong>${ageLabel}</strong></small>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+    
+    // Make validation function global so inline handlers can access it
+    window.validateDateOnChange = function(input) {
+        const $input = $(input);
+        const dobValue = $input.val();
+        
+        if (!dobValue) return;
+        
+        const travelerType = $input.data('type');
+        const minDate = $input.data('min-date');
+        const maxDate = $input.data('max-date');
+        
+        // Check if date is within allowed range
+        if (dobValue < minDate || dobValue > maxDate) {
+            $input.val(''); // Clear invalid date
+            alert('❌ Please select a valid date within the allowed range for ' + travelerType + ' travelers.');
+            return;
+        }
+        
+        // Validate age
+        validateSingleDate($input);
+    };
+    
+    // Add real-time date validation
+    function setupDateValidation() {
+        $(document).on('change blur', '.afsar-dob-input', function() {
+            validateSingleDate($(this));
+        });
+    }
+    
+    function validateSingleDate($input) {
+        const dobValue = $input.val();
+        const travelerType = $input.data('type');
+        const ageLabel = $input.data('age-label');
+        
+        // Remove any previous error
+        $input.next('.afsar-dob-error').remove();
+        
+        if (!dobValue) {
+            $input.css('border-color', '');
+            $input.css('background-color', '');
+            return true; // Not required for now, will be checked in main validation
+        }
+        
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const dob = new Date(dobValue);
+        dob.setHours(0, 0, 0, 0);
+        
+        // Calculate age in years more accurately
+        let age = today.getFullYear() - dob.getFullYear();
+        const monthDiff = today.getMonth() - dob.getMonth();
+        const dayDiff = today.getDate() - dob.getDate();
+        
+        // Adjust age if birthday hasn't occurred this year yet
+        if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+            age--;
+        }
+        
+        let isValid = false;
+        let errorMsg = '';
+        
+        if (travelerType === 'adult') {
+            isValid = age >= 12;
+            errorMsg = 'Adults must be 12 years or older. Selected age: ' + age + ' years';
+        } else if (travelerType === 'child') {
+            isValid = (age >= 2 && age <= 11);
+            errorMsg = 'Children must be between 2 and 11 years old. Selected age: ' + age + ' years';
+        } else if (travelerType === 'infant') {
+            isValid = age <= 2;
+            errorMsg = 'Infants must be 2 years or younger. Selected age: ' + age + ' years';
+        }
+        
+        if (!isValid) {
+            $input.css('border-color', '#ff4444');
+            $input.css('background-color', '#fff5f5');
+            // Show error message below the field
+            $input.after(`<div class="afsar-dob-error" style="color: #ff4444; font-size: 13px; font-weight: 600; margin-top: 6px; padding: 8px; background: #fff5f5; border-radius: 4px; border-left: 3px solid #ff4444;">⚠️ ${errorMsg}</div>`);
+            return false;
+        } else {
+            $input.css('border-color', '#28a745');
+            $input.css('background-color', '#f0fff4');
+            return true;
+        }
+    }
+    
+    function validateTravelerForms() {
+        let isValid = true;
+        let errorMsg = '';
+        
+        console.log('Validating traveler forms...');
+        
+        // Check first traveler (required fields)
+        if (!$('input[name="name_1"]').val() || 
+            !$('input[name="email_1"]').val() || 
+            !$('input[name="phone_1"]').val()) {
+            errorMsg = '❌ Please fill all required fields for the first traveler:\n- Full Name\n- Email\n- Phone';
+            alert(errorMsg);
+            return false;
+        }
+        
+        // Validate all names are filled
+        let allNamesValid = true;
+        $('.afsar-traveler-form').each(function() {
+            const index = $(this).data('traveler');
+            const name = $('input[name="name_' + index + '"]').val();
+            if (!name || name.trim() === '') {
+                errorMsg = '❌ Please fill the name for all travelers';
+                allNamesValid = false;
+                return false;
+            }
+        });
+        
+        if (!allNamesValid) {
+            alert(errorMsg);
+            return false;
+        }
+        
+        // Validate all date of birth fields
+        let allDatesValid = true;
+        let dateErrorMsg = '';
+        let firstInvalidInput = null;
+        
+        $('.afsar-dob-input').each(function() {
+            const dobValue = $(this).val();
+            const travelerType = $(this).data('type');
+            const $form = $(this).closest('.afsar-traveler-form');
+            const travelerLabel = $form.find('h3').text();
+            
+            console.log('Validating DOB for:', travelerLabel, 'Type:', travelerType, 'Value:', dobValue);
+            
+            // Date of birth is required
+            if (!dobValue || dobValue === '') {
+                dateErrorMsg = '❌ Please fill the date of birth for: ' + travelerLabel;
+                $(this).css('border-color', '#ff4444');
+                $(this).css('background-color', '#fff5f5');
+                if (!firstInvalidInput) firstInvalidInput = $(this);
+                allDatesValid = false;
+                return false;
+            }
+            
+            // Validate the date
+            if (!validateSingleDate($(this))) {
+                dateErrorMsg = '❌ Invalid date of birth for: ' + travelerLabel + '\nPlease check the age requirements.';
+                if (!firstInvalidInput) firstInvalidInput = $(this);
+                allDatesValid = false;
+                return false;
+            }
+        });
+        
+        if (!allDatesValid) {
+            alert(dateErrorMsg);
+            // Scroll to the first invalid input
+            if (firstInvalidInput) {
+                $('html, body').animate({
+                    scrollTop: firstInvalidInput.offset().top - 100
+                }, 300);
+                firstInvalidInput.focus();
+            }
+            return false;
+        }
+        
+        console.log('All validations passed!');
+        return true;
+    }
+    
+    function collectTravelerData() {
+        booking.travelers = [];
+        
+        $('.afsar-traveler-form').each(function() {
+            const index = $(this).data('traveler');
+            booking.travelers.push({
+                name: $('input[name="name_' + index + '"]').val(),
+                email: $('input[name="email_' + index + '"]').val(),
+                phone: $('input[name="phone_' + index + '"]').val(),
+                passport: $('input[name="passport_' + index + '"]').val(),
+                dob: $('input[name="dob_' + index + '"]').val()
+            });
+        });
+        
+        console.log('Travelers data collected:', booking.travelers);
+    }
+    
+    // STEP 6: Generate Summary
+    function generateSummary() {
+        const packageCost = booking.package.price * (booking.persons.adults + booking.persons.children * 0.7);
+        
+        // Calculate hotel cost (optional)
+        let hotelCost = 0;
+        if (booking.hotels.makkah && booking.hotels.madinah) {
+            hotelCost = (booking.hotels.makkah.price * 7) + (booking.hotels.madinah.price * 7);
+        } else if (booking.hotels.makkah) {
+            hotelCost = booking.hotels.makkah.price * 7;
+        } else if (booking.hotels.madinah) {
+            hotelCost = booking.hotels.madinah.price * 7;
+        }
+        
+        // Calculate transport cost (optional)
+        const totalPersons = booking.persons.adults + booking.persons.children + booking.persons.infants;
+        let transportCost = 0;
+        if (booking.transport) {
+            transportCost = booking.transport.price * totalPersons;
+        }
+        
+        const grandTotal = packageCost + hotelCost + transportCost;
+        
+        // Build hotels HTML
+        let hotelsHTML = '';
+        if (booking.hotels.makkah || booking.hotels.madinah) {
+            hotelsHTML = `
+                <div class="afsar-summary-block">
+                    <h3>🏨 Hotels</h3>
+                    ${booking.hotels.makkah ? `<p><strong>Makkah:</strong> ${booking.hotels.makkah.name}</p>` : ''}
+                    ${booking.hotels.madinah ? `<p><strong>Madinah:</strong> ${booking.hotels.madinah.name}</p>` : ''}
+                    <p>Cost: SAR ${hotelCost.toLocaleString()} (7 nights each)</p>
+                </div>
+            `;
+        } else {
+            hotelsHTML = `
+                <div class="afsar-summary-block">
+                    <h3>🏨 Hotels</h3>
+                    <p><em>Skipped - Own arrangement</em></p>
+                </div>
+            `;
+        }
+        
+        // Build transport HTML
+        let transportHTML = '';
+        if (booking.transport) {
+            transportHTML = `
+                <div class="afsar-summary-block">
+                    <h3>🚗 Transport</h3>
+                    <p><strong>${booking.transport.name}</strong></p>
+                    <p>${totalPersons} persons × SAR ${booking.transport.price}</p>
+                    <p>Cost: SAR ${transportCost.toLocaleString()}</p>
+                </div>
+            `;
+        } else {
+            transportHTML = `
+                <div class="afsar-summary-block">
+                    <h3>🚗 Transport</h3>
+                    <p><em>Skipped - Own arrangement</em></p>
+                </div>
+            `;
+        }
+        
+        const html = `
+            <div class="afsar-summary-block">
+                <h3>📦 Package</h3>
+                <p><strong>${booking.package.name}</strong></p>
+                <p>Category: ${booking.package.category}</p>
+                <p>Duration: ${booking.package.duration}</p>
+                <p>Cost: SAR ${packageCost.toLocaleString()}</p>
+            </div>
+            
+            <div class="afsar-summary-block">
+                <h3>👥 Travelers</h3>
+                <p>${booking.persons.adults} Adults + ${booking.persons.children} Children + ${booking.persons.infants} Infants</p>
+                <p><strong>Lead Traveler:</strong> ${booking.travelers[0].name}</p>
+                <p><strong>Contact:</strong> ${booking.travelers[0].email}</p>
+            </div>
+            
+            ${hotelsHTML}
+            
+            ${transportHTML}
+            
+            <div class="afsar-summary-total">
+                <h3>TOTAL AMOUNT</h3>
+                <div class="price">SAR ${grandTotal.toLocaleString()}</div>
+            </div>
+        `;
+        
+        $('#afsar-booking-summary').html(html);
+    }
+    
+    // Complete Booking
+    function setupCompletion() {
+        $('.afsar-btn-complete').on('click', function() {
+            const btn = $(this);
+            btn.prop('disabled', true).text('Processing...');
+            
+            // Calculate final total
+            const packageCost = booking.package.price * (booking.persons.adults + booking.persons.children * 0.7);
+            
+            // Calculate hotel cost (optional)
+            let hotelCost = 0;
+            if (booking.hotels.makkah && booking.hotels.madinah) {
+                hotelCost = (booking.hotels.makkah.price * 7) + (booking.hotels.madinah.price * 7);
+            } else if (booking.hotels.makkah) {
+                hotelCost = booking.hotels.makkah.price * 7;
+            } else if (booking.hotels.madinah) {
+                hotelCost = booking.hotels.madinah.price * 7;
+            }
+            
+            // Calculate transport cost (optional)
+            const totalPersons = booking.persons.adults + booking.persons.children + booking.persons.infants;
+            let transportCost = 0;
+            if (booking.transport) {
+                transportCost = booking.transport.price * totalPersons;
+            }
+            
+            const grandTotal = packageCost + hotelCost + transportCost;
+            
+            $.ajax({
+                url: afsarData.ajaxurl,
+                type: 'POST',
+                data: {
+                    action: 'asfaar_travels_complete_booking',
+                    nonce: afsarData.nonce,
+                    booking_data: JSON.stringify(booking)
+                },
+                success: function(response) {
+                    if (response.success) {
+                        $('#afsar-final-reference').text(response.data.reference);
+                        $('#afsar-final-total').text(response.data.total);
+                        
+                        // Store reference for PDF
+                        booking.reference = response.data.reference;
+                        booking.total = response.data.total;
+                        
+                        goToStep(7);
+                    } else {
+                        alert('Booking failed. Please try again.');
+                        btn.prop('disabled', false).text('Complete Booking');
+                    }
+                },
+                error: function() {
+                    alert('Connection error. Please try again.');
+                    btn.prop('disabled', false).text('Complete Booking');
+                }
+            });
+        });
+        
+        // PDF Download
+        $('#afsarDownloadPDF').on('click', function() {
+            generatePDF();
+        });
+    }
+    
+    // Generate PDF
+    function generatePDF() {
+        // Simple PDF generation using browser print
+        const printWindow = window.open('', '', 'height=600,width=800');
+        
+        const html = `
+            <html>
+            <head>
+                <title>Booking ${booking.reference}</title>
+                <style>
+                    body { font-family: Arial; padding: 40px; }
+                    h1 { color: #3055FF; }
+                    .section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; }
+                    .total { background: #3055FF; color: white; padding: 20px; text-align: center; font-size: 24px; }
+                </style>
+            </head>
+            <body>
+                <h1>AFSAR Tours - Booking Confirmation</h1>
+                <p><strong>Reference:</strong> ${booking.reference}</p>
+                <p><strong>Date:</strong> ${new Date().toLocaleDateString()}</p>
+                
+                <div class="section">
+                    <h3>Package</h3>
+                    <p>${booking.package.name}</p>
+                    <p>${booking.package.duration}</p>
+                </div>
+                
+                <div class="section">
+                    <h3>Travelers</h3>
+                    <p>${booking.persons.adults} Adults, ${booking.persons.children} Children, ${booking.persons.infants} Infants</p>
+                    <p><strong>Lead:</strong> ${booking.travelers[0].name}</p>
+                    <p><strong>Email:</strong> ${booking.travelers[0].email}</p>
+                    <p><strong>Phone:</strong> ${booking.travelers[0].phone}</p>
+                </div>
+                
+                <div class="section">
+                    <h3>Hotels</h3>
+                    <p><strong>Makkah:</strong> ${booking.hotels.makkah.name}</p>
+                    <p><strong>Madinah:</strong> ${booking.hotels.madinah.name}</p>
+                </div>
+                
+                <div class="section">
+                    <h3>Transport</h3>
+                    <p>${booking.transport.name}</p>
+                </div>
+                
+                <div class="total">
+                    TOTAL: SAR ${booking.total}
+                </div>
+                
+                <p style="margin-top: 30px; color: #666;">Thank you for booking with AFSAR Tours!</p>
+            </body>
+            </html>
+        `;
+        
+        printWindow.document.write(html);
+        printWindow.document.close();
+        
+        setTimeout(function() {
+            printWindow.print();
+        }, 500);
+    }
+});
